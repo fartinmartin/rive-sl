@@ -2,7 +2,8 @@ import { RiveInstance, RiveParametersLike } from "./lib/RiveInstance";
 
 class RiveSL {
 	private _animations: { name: string; rive: RiveInstance }[] = [];
-	private _basePath: string = "";
+	public basePath: string = "";
+	public debounce: number = 500;
 
 	add(selectors: string, riveOptions: RiveParametersLike) {
 		// TODO: it might be a bad idea to rely on [data-acc-text="VALUE"] to hook into Storyline elements, however, I don't see another reliable way at the moment.
@@ -23,29 +24,13 @@ class RiveSL {
 		return this._animations.find((anim) => anim.name === selectors)?.rive;
 	}
 
-	remove(selectors: string) {
-		// TODO: remove from DOM too?
-		this._animations.filter((anim) => anim.name !== selectors);
-	}
-
-	removeAll() {
-		// TODO: remove from DOM too?
-		this._animations.length = 0;
-	}
+	// TODO: remove specific and/or all RiveInstances (from _animations[] and DOM too?)
 
 	get animations() {
-		// protect our array from external js
-		return this._animations;
-	}
-
-	get basePath() {
-		return this._basePath;
-	}
-
-	set basePath(path: string) {
-		this._basePath = path;
+		return this._animations; // Protect our array from external js
 	}
 }
 
+// We don't want users to create instances of RiveSL. Instead they will reference our global instance:
 // @ts-ignore
 window.Rive = new RiveSL();
