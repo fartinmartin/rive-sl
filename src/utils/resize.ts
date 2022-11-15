@@ -19,4 +19,6 @@ export function resizeObserver(
 	);
 
 	observer.observe(el);
+
+	return observer;
 }
